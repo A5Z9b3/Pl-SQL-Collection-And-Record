@@ -22,6 +22,14 @@ It can hold related fields such as a student’s ID, name, and average mark — 
 Example:
 One record might store:
 (ID = 1, Name = 'Alice', Average = 85)
+
+##  GOTO
+
+A GOTO statement is used to jump to a specific part of a PL/SQL program using a label.
+It can skip over or jump to certain code sections — but it should be used carefully because it can make code harder to read.
+
+Example:
+If data is invalid, use GOTO skip_this; to jump to a label named skip_this.
 ##  Key Concepts
 - **Collections:** Used an **Associative Array** to store multiple student records in memory.
 - **Records:** Defined a **custom RECORD type** to hold individual student information.
