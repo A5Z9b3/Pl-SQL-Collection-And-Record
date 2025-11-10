@@ -28,3 +28,8 @@ It processes student data, calculates average marks, determines academic status,
    @scripts/create_tables.sql
    @scripts/insert_sample_data.sql
    @scripts/student_tracker.sql
+
+
+
+   SET SERVEROUTPUT ON;
+
