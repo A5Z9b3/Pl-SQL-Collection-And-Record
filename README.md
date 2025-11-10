@@ -105,3 +105,121 @@ If data is invalid, use GOTO skip_this; to jump to a label named skip_this.
 
    SET SERVEROUTPUT ON;
 
+   
+---
+
+## 📜 scripts/create_tables.sql
+
+```sql
+-- Drop existing tables (if any)
+BEGIN
+  EXECUTE IMMEDIATE 'DROP TABLE marks';
+  EXECUTE IMMEDIATE 'DROP TABLE students';
+EXCEPTION
+  WHEN OTHERS THEN NULL;
+END;
+/
+
+-- Create main tables
+CREATE TABLE students (
+  student_id NUMBER PRIMARY KEY,
+  student_name VARCHAR2(50)
+);
+
+CREATE TABLE marks (
+  student_id NUMBER,
+  subject VARCHAR2(30),
+  mark NUMBER(3),
+  CONSTRAINT fk_student FOREIGN KEY (student_id)
+    REFERENCES students(student_id)
+);
+/
+## Insert sample
+
+-- Insert students
+INSERT INTO students VALUES (1, 'Alice');
+INSERT INTO students VALUES (2, 'Bob');
+INSERT INTO students VALUES (3, 'Charlie');
+INSERT INTO students VALUES (4, NULL); -- Invalid record (for GOTO test)
+
+-- Insert marks
+INSERT INTO marks VALUES (1, 'Math', 90);
+INSERT INTO marks VALUES (1, 'Science', 82);
+INSERT INTO marks VALUES (1, 'English', 81);
+
+INSERT INTO marks VALUES (2, 'Math', 60);
+INSERT INTO marks VALUES (2, 'Science', 55);
+INSERT INTO marks VALUES (2, 'English', 52);
+
+INSERT INTO marks VALUES (3, 'Math', 20);
+INSERT INTO marks VALUES (3, 'Science', 35);
+INSERT INTO marks VALUES (3, 'English', 41);
+
+COMMIT;
+/
+
+## scripts/student_tracker.sql
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+  -- Define a record type for one student's info
+  TYPE student_rec IS RECORD (
+    student_id   students.student_id%TYPE,
+    student_name students.student_name%TYPE,
+    avg_mark     NUMBER(5,2),
+    failed_subj  NUMBER,
+    status       VARCHAR2(20)
+  );
+
+  -- Define a collection (Associative Array)
+  TYPE student_table IS TABLE OF student_rec INDEX BY PLS_INTEGER;
+  students_data student_table;
+
+  v_counter INTEGER := 0;
+
+  CURSOR c_students IS
+    SELECT s.student_id,
+           s.student_name,
+           NVL(AVG(m.mark),0) AS avg_mark,
+           SUM(CASE WHEN m.mark < 40 THEN 1 ELSE 0 END) AS failed_subj
+    FROM students s
+    LEFT JOIN marks m ON s.student_id = m.student_id
+    GROUP BY s.student_id, s.student_name;
+
+BEGIN
+  FOR rec IN c_students LOOP
+    v_counter := v_counter + 1;
+
+    -- GOTO example: Skip student if name is NULL
+    IF rec.student_name IS NULL THEN
+      DBMS_OUTPUT.PUT_LINE('Skipping invalid student record...');
+      GOTO skip_student;
+    END IF;
+
+    students_data(v_counter).student_id   := rec.student_id;
+    students_data(v_counter).student_name := rec.student_name;
+    students_data(v_counter).avg_mark     := rec.avg_mark;
+    students_data(v_counter).failed_subj  := rec.failed_subj;
+
+    IF rec.failed_subj > 2 THEN
+      students_data(v_counter).status := 'At Risk';
+    ELSE
+      students_data(v_counter).status := 'Good Standing';
+    END IF;
+
+    DBMS_OUTPUT.PUT_LINE('Processed: ' || rec.student_name ||
+                         ' | Avg: ' || rec.avg_mark ||
+                         ' | Status: ' || students_data(v_counter).status);
+
+    <<skip_student>>
+    NULL; -- Label for GOTO
+  END LOOP;
+
+EXCEPTION
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
+END;
+/
+
+
