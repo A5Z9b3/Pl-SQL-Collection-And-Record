@@ -59,6 +59,25 @@ It can skip over or jump to certain code sections — but it should be used care
 
 Example:
 If data is invalid, use GOTO skip_this; to jump to a label named skip_this.
+
+# Reflection and Learning
+
+## What I Learned
+- How to use **Collections** to hold multiple rows temporarily in PL/SQL.
+- How **Records** simplify grouping related data.
+- How **GOTO** works — and why it's usually avoided in large systems.
+
+## Challenges Faced
+- Handling NULL values correctly.
+- Designing the cursor query to include averages and failure counts.
+- Understanding when GOTO is appropriate versus using IF conditions.
+
+## Improvements for the Future
+- Replace GOTO with structured exception handling.
+- Add user input or parameters for dynamic execution.
+- Store output in a result table instead of using DBMS_OUTPUT.
+
+
 ##  Key Concepts
 - **Collections:** Used an **Associative Array** to store multiple student records in memory.
 - **Records:** Defined a **custom RECORD type** to hold individual student information.
