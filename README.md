@@ -134,31 +134,10 @@ CREATE TABLE marks (
     REFERENCES students(student_id)
 );
 /
-## Insert sample
 
--- Insert students
-INSERT INTO students VALUES (1, 'Alice');
-INSERT INTO students VALUES (2, 'Bob');
-INSERT INTO students VALUES (3, 'Charlie');
-INSERT INTO students VALUES (4, NULL); -- Invalid record (for GOTO test)
 
--- Insert marks
-INSERT INTO marks VALUES (1, 'Math', 90);
-INSERT INTO marks VALUES (1, 'Science', 82);
-INSERT INTO marks VALUES (1, 'English', 81);
 
-INSERT INTO marks VALUES (2, 'Math', 60);
-INSERT INTO marks VALUES (2, 'Science', 55);
-INSERT INTO marks VALUES (2, 'English', 52);
-
-INSERT INTO marks VALUES (3, 'Math', 20);
-INSERT INTO marks VALUES (3, 'Science', 35);
-INSERT INTO marks VALUES (3, 'English', 41);
-
-COMMIT;
-/
-
-## scripts/student_tracker.sql
+## 📜 scripts/student_tracker.sql
 
 SET SERVEROUTPUT ON;
 
