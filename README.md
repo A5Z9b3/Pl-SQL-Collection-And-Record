@@ -3,7 +3,6 @@
   
 
 
-# PL/SQL STUDENT PERFORMANCE TRACKER PROJECT
 
 # Student Performance Tracker (PL/SQL Collections, Records, and GOTO)
 
