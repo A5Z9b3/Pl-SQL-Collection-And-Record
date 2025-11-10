@@ -9,6 +9,31 @@
 # Overview
 This project demonstrates the use of **PL/SQL Collections**, **Records**, and **GOTO statements** in a real-world scenario — a simple *Student Performance Tracker*.  
 It processes student data, calculates average marks, determines academic status, and handles invalid records gracefully using a GOTO control structure.
+# Design Notes
+
+## Purpose
+This project demonstrates the integration of **PL/SQL Collections**, **Records**, and **GOTO statements** through a Student Performance Tracking system.
+
+## Design Highlights
+- **Record (student_rec):**
+  - Stores individual student details: ID, Name, Average Marks, Failed Subjects, and Status.
+- **Collection (student_table):**
+  - Acts as an in-memory list of student records for batch processing.
+- **GOTO Statement:**
+  - Used sparingly to skip processing when a record is invalid (e.g., missing student name).
+
+## Logic Flow
+1. Fetch all students with their marks using a cursor.
+2. For each student:
+   - Calculate average mark and failed subjects.
+   - Use GOTO to skip incomplete data.
+   - Determine status based on performance.
+3. Display all processed records using `DBMS_OUTPUT`.
+
+## Design Justification
+- **Associative Array:** Fast, index-based in-memory processing.
+- **Record:** Clean, structured way to store related fields.
+- **GOTO:** Demonstrates control transfer, but intentionally limited to one clear case.
 
 ## Collection
 
