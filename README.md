@@ -5,6 +5,7 @@
 # Overview
 This project demonstrates the use of **PL/SQL Collections**, **Records**, and **GOTO statements** in a real-world scenario — a simple *Student Performance Tracker*.  
 It processes student data, calculates average marks, determines academic status, and handles invalid records gracefully using a GOTO control structure.
+
 ##Collection
 
 A collection in PL/SQL is like a list or array that can store multiple values of the same type (for example, a list of numbers or names).
